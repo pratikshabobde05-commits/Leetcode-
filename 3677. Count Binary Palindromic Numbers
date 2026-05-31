@@ -1,0 +1,35 @@
+class Solution:
+    def countBinaryPalindromes(self, n):
+        if n == 0:
+            return 1
+
+        b = bin(n)[2:]
+        L = len(b)
+
+        # Count 0
+        ans = 1
+
+        # Count palindromes of smaller lengths
+        for length in range(1, L):
+            ans += 1 << ((length - 1) // 2)
+
+        # Count palindromes of length L
+        half_len = (L + 1) // 2
+
+        prefix = int(b[:half_len], 2)
+        min_prefix = 1 << (half_len - 1)
+
+        ans += prefix - min_prefix
+
+        # Build palindrome from the prefix of n
+        s = b[:half_len]
+
+        if L % 2 == 0:
+            pal = s + s[::-1]
+        else:
+            pal = s + s[:-1][::-1]
+
+        if int(pal, 2) <= n:
+            ans += 1
+
+        return ans
